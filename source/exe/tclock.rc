@@ -72,5 +72,5 @@ MYICON               ICON    DISCARDABLE     "tclock.ico"
 // 24
 //
 
-1                    24      DISCARDABLE     "tclock.manifest"
+// 1                    24      DISCARDABLE     "tclock.manifest"
 

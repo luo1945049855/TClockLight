@@ -9,6 +9,8 @@
 #include "common.h"
 #include <dwmapi.h>
 
+#pragma warning(disable : 4996)
+
 extern HINSTANCE g_hInst;
 extern char g_mydir[];
 

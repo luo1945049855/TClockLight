@@ -360,7 +360,7 @@ void SetStartButtonBmp(HWND hwnd)
 	HBITMAP hbmpIcon, hbmpBack;
 	HICON hIcon;
 	HDC hdc;
-	HFONT hfont, hfontOld;
+	HFONT hfont, hfontOld = NULL;
 	COLORREF col;
 	
 	/* ---------- read settings and BMP file -------------- */

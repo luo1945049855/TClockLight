@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Custom Definition -->
+  <PropertyGroup Label="UserMacros">
+    <ThisPropPath>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)))</ThisPropPath>
+    <SourceRoot>$(ThisPropPath)</SourceRoot>
+    <ThirdPartyRoot>$(ThisPropPath)\third_party\</ThirdPartyRoot>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Debug'">
+      <PropertyGroup Label="UserMacros">
+        <ConfigurationVar>Debug</ConfigurationVar>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <PropertyGroup Label="UserMacros">
+        <ConfigurationVar>Release</ConfigurationVar>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <!-- Common Configuration -->
+  <PropertyGroup Label="Configuration">
+    <OutDir>$(ThisPropPath)bin\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(ThisPropPath)bin\Intermediate\$(Configuration)_$(Platform)\$(MSBuildProjectName)\</IntDir>
+    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <CharacterSet>Unicode</CharacterSet>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <!-- Force VS toolset version by Directory.Build.targets -->
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludePath>
+      $(SolutionDir);$(ThisPropPath);$(ThirdPartyRoot);$(ThirdPartyRoot)\freetype\include;$(ThirdPartyRoot)\EasyHook\;$(ThirdPartyRoot)\EasyHook\Public\;$(ThirdPartyRoot)\IniParser;$(ThirdPartyRoot)\MurmurHash;$(ThirdPartyRoot)\wtl\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS; %(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level3</WarningLevel>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <TreatSpecificWarningsAsErrors>4715;%(TreatSpecificWarningsAsErrors)</TreatSpecificWarningsAsErrors>
+    </ClCompile>
+    <ClCompile Condition="'$(ConfigurationVar)'=='Debug'">
+      <!-- <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary> -->
+    </ClCompile>
+    <ClCompile Condition="'$(ConfigurationVar)'=='Release'">
+      <!-- <RuntimeLibrary>MultiThreaded</RuntimeLibrary> -->
+      <!-- Release优化，统一使用O2 -->
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+
+    <ResourceCompile>
+      <!-- 产品宏定义传递给RC，根目录包含在RC的默认目录 -->
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+        $(ThisPropPath);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+        Winmm.lib;Dwmapi.lib;Imm32.lib;Comctl32.lib
+      </AdditionalDependencies>
+    </Link>
+    <Link Condition="'$(ConfigurationVar)'=='Debug'">
+    </Link>
+    <Link Condition="'$(ConfigurationVar)'=='Release'">
+    </Link>
+
+    <Lib></Lib>
+    <Lib Condition="'$(ConfigurationVar)'=='Debug'">
+    </Lib>
+    <Lib Condition="'$(ConfigurationVar)'=='Release'">
+    </Lib>
+
+    <Midl>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories></AdditionalIncludeDirectories>
+    </Midl>
+  </ItemDefinitionGroup>
+</Project>
